@@ -1,0 +1,248 @@
+ \documentclass[11pt]{beamer}
+\usetheme{Warsaw}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+\definecolor{ceil}{rgb}{0.57, 0.63, 0.81}
+\lstdefinestyle{BashInputStyle}{
+  language=bash,
+  basicstyle=\small\sffamily,
+  %numbers=left,
+  %numberstyle=\tiny,
+  %numbersep=3pt,
+  frame=tb,
+  columns=fullflexible,
+  backgroundcolor=\color{ceil!20},
+  linewidth=0.9\linewidth,
+  xleftmargin=0.1\linewidth
+}
+
+
+ 
+\urlstyle{same}
+\usetikzlibrary{arrows,automata}
+%\usepackage[latin1]{inputenc}
+
+\author{Chris Smith}
+\title{GDB Information}
+%\setbeamercovered{transparent} 
+%\setbeamertemplate{navigation symbols}{} 
+%\logo{} 
+\institute{SDSMT ACM/LUG} 
+%\date{} 
+%\subject{} 
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Overview}
+\begin{itemize}
+\item What is gdb?
+\item Compiling with debugging Flags
+\item Running gdb
+\item Interactive Shell
+\item Running the Program
+\item Breakpoints
+\item Stepping Through
+\item Viewing Variables
+\item More Commands
+\item Conditional Breakpoints
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{What is gdb?}
+\begin{itemize}
+\item The GNU Debugger
+\item Debugs C/C++, Go, Objective-C, and more
+\item Allows for viewing what the program is executing
+\item Easier to find Segmentation Faults
+\item \href{https://www.gnu.org/software/gdb/documentation/}{Documentation}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Compiling}
+Typically programs are compiled by running:
+\begin{lstlisting}[style=BashInputStyle]
+ $ g++ [flags] prog1.cpp -o prog1
+\end{lstlisting}
+To enable debugging flags which gdb needs, add the -g flag like so:
+\begin{lstlisting}[style=BashInputStyle]
+ $ g++ [flags] -g prog1.cpp -o prog1
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Running gdb}
+To start gdb run the following:
+\begin{lstlisting}[style=BashInputStyle]
+ $ gdb
+\end{lstlisting}
+ To load a file on start up just add the file name as a commandline argument. \\
+ Afer the above command the following prompt should be shown:
+\begin{lstlisting}[style=BashInputStyle]
+ (gdb)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Interactive Shell}
+gdb is like the interactive shells you get when first logging into Linux.
+\begin{itemize}
+\item Similar to bash, python, and lisp
+\item History of commands
+\item Tab completion
+\item Execution of shell commands
+\end{itemize}
+If there ever is any confusion the built in help menu gives a description of what a command does and what arguments it takes.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Running the program}
+To run the the program:
+\begin{lstlisting}[style=BashInputStyle]
+(gdb) run
+\end{lstlisting}
+If there are no serious problems it should execute normally.
+\begin{lstlisting}[style=BashInputStyle]
+[inferior 1 (process 1234) exited normally]
+\end{lstlisting}
+If there are is a problem it will return information regarding where it crashed, what function, and the function variables that caused the error.
+\begin{lstlisting}[style=BashInputStyle]
+Program received signal SIGSEGV, Segmentation fault.
+0x0000000000400633 in main () at fib.cpp:27
+27        x[c] = next;
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Debugging}
+The program is running successfully without any segmentation faults. However, the result isn't what is expected.
+\break
+\break
+Downside to using console output:
+\begin{itemize}
+\item Cout, cin, printf, and scanf are slow
+\item Information can scroll by too fast
+\item Memory allocation
+\item May not be thread safe
+\item Hinders timing sensitive programs
+\end{itemize}
+\end{frame}
+\begin{frame}{Breakpoints}
+Stepping through the code can be a more efficient approach since a segmentation fault could be happening in one function but the root of the cause was a couple of function calls ago.
+\break
+\break
+Breakpoints in gdb are similar to what is used in Visual Studio. They allow for you to stop the program from executing once it reaches a designated spot in the code.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Breakpoints}
+To use a break just enter the command \textbf{\textcolor{blue}{break}} followed by the file and line number pair like so:
+\begin{lstlisting}[style=BashInputStyle]
+(gdb) break fib.cpp:27
+\end{lstlisting}
+This will set a break point in file fib.cpp at line 27. Anytime this line is reached the program will stop executing until another command is entered. 
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Breakpoints}
+Breakpoints can also be used to break at functions instead of line numbers. If there existed a function called sum\_array in fib.cpp the following could be done:
+\begin{lstlisting}[style=BashInputStyle]
+(gdb) break sum_array
+\end{lstlisting}
+gdb will stop executing once this function is reached.
+\end{frame}
+
+\begin{frame}{Stepping Through}
+Now that the breakpoints are set we can use the \textbf{\textcolor{blue}{run}} command again to start executing the code. It will stop at these breakpoints unless an error occurs before reaching this point.
+\break
+\break
+Once the point is reached you can proceed to the next breakpoint by using the command \textbf{\textcolor{blue}{continue}}. The command run would restart the execution from the beginning.
+\break
+\break
+Instead of continuing on to the next breakpoint one can go to the next line of code by using the command \textbf{\textcolor{blue}{step}}. 
+\end{frame}
+\begin{frame}{Stepping Through}
+Be careful with step because it will go into the sub-routine like printf or scanf. If you don't want to go into the sub-routine use the command \textbf{\textcolor{blue}{next}} and it will treat it as a instruction.
+\break
+\break
+Retyping the same command over and over can get tedious so gdb allows the user to just hit enter and will execute the previously entered command.
+\end{frame}
+
+\begin{frame}{Viewing Variables}
+Breakpoints alone are not useful when variables are involved. They allow you to see if a function or if the interior of a conditional statement is being executed, however, they don't allow the user to view the value of a variable.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Viewing Variables}
+If you want to see all the variables in the local function that the program has stopped executing in due to a breakpoint type the command \textbf{\textcolor{blue}{info}} followed by the scope that is to be referenced. \\
+For example to view local variables type the following:
+\begin{lstlisting}[style=BashInputStyle]
+(gdb) info locals
+\end{lstlisting}
+To view arguments or global variables replace locals in the above command with args and variables respectfully.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Viewing Variables}
+In order to view one variable the \textbf{\textcolor{blue}{print}} command followed by a variable name will print out the value of the variable. If hex output is desired use \textbf{\textcolor{blue}{print/x}}
+\begin{lstlisting}[style=BashInputStyle]
+(gdb) print my_var
+(gdb) print/x my_var
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{More Commands}
+Useful Commands:
+\begin{itemize}
+\item \textbf{\textcolor{blue}{backtrace}} - summary of how your program got where it is (Done when a seg fault occurs)
+\item \textbf{\textcolor{blue}{where}} - gives a function call trace of how you got to this point and shows line numbers inside files (Can be done anywhere)
+\item \textbf{\textcolor{blue}{finnish}} - runs until the current function has completed executing
+\item \textbf{\textcolor{blue}{delete}} - deletes a specific breakpoint
+\item \textbf{\textcolor{blue}{info breakpoints}} - shows information about all breakpoints
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Conditional Breakpoints}
+Breakpoints are useful to figure out what the problem is or the general issue with a variable. 
+\break
+\break
+We don't want to keep stepping through a function if the issue only happens towards the end of an array. 
+\break
+\break
+So for this reason we would like to stop executing based on a conditional requirement.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Conditional Breakpoints}
+Conditional breakpoints are just like normal breakpoints except for the extra conditional:
+\begin{lstlisting}[style=BashInputStyle]
+(gdb) break fib.cpp:27 if c >= SIZE
+(gdb) break fib.cpp:27 if(c >= SIZE || c < 0)
+\end{lstlisting}
+\end{frame}
+\end{document}
+
+
+
+
+
+
+
+
+
