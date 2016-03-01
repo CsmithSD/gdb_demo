@@ -1,0 +1,7 @@
+This little application has a bug that shows up inconsistently.  If you compile
+the program and run it a number of times, you will see floating point
+exception error (SIGFPE).
+
+This executable also has some memory leaks.  Make note of them and explain why
+valgrind is complaining that memory is leaking.  Set a breakpoint before the
+statement that causes the floating point exception.

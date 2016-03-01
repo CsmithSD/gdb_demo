@@ -1,0 +1,12 @@
+This application uses some simple macros to add instrumentation to a program
+that is easy to turn on and off using the -DDEBUG compilation flag.  Look at
+the common.h include file where the TRACE_ON, TRACE_OFF, ENTRY(x), and EXIT(x)
+macros are defined.  If the -DDEBUG compiler option isn't issued then the
+macros are set to be nothing so that the preprocessor replaces the 
+instrumentation in the source file with a blank line.  When the -DDEBUG
+options are included in the compilation the macros expand to include
+the cout instrumentation.
+
+Any number of these macros can be defined and used in similar ways.  Some other
+examples include creating macros that allow you to wrap exception handling
+code (example to come)

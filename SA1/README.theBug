@@ -1,0 +1,50 @@
+This application suffers from 'silent data corruption'.  One of the most
+dangerous and hardest to find bugs.  Because of the nature of the problem,
+these types of bugs can remain hidden through test cycles and into production
+code making them hard to find and expensive to fix.
+
+When tracking memory reads and writes, the debugger needs hardware traps.  Most
+processors have a limited number of these hardware traps which makes it 
+impossible for gdb to watch ranges (like arrays or structures).  We can use
+valgrind's capability for simulating hardware instructions to give us a 
+virtually unlimited number of hardware traps for use in watching particular
+memory locations.
+
+You will need:
+
+   * Two terminal windows
+   * The executable compiled with -g (all source files compiled with -g)
+   * Valgrind and gdb installed on your machine
+
+In the first window, run the executable in valgrind using the --vgdb=full flag:
+
+valgrind --vgdb=full --vgdb-error=0 theBug
+
+In the second window, run the executable in gdb:
+
+gdb theBug
+(gdb) target remote | vgdb [--pid]
+
+Navigate gdb in the second window to the point in the code where you want to
+start watching the memory in question (try to isolate this as closely as you
+can since the application will run *very* slowly in this valgrind/gdb 
+configuration).  Once at the correct place in executation, assign the watch
+
+(gdb) rwatch corruptedArray
+or
+(gdb) watch corruptedArray
+
+rwatch will place a read/write watch on the array, watch will place a write
+watch on the array.
+
+You will note that while running this application under only valgrind, there are
+a number of memory leaks.  Another feature of this problem is that fixing
+the memory leaks first can cause another seemingly unrelated problem.  Go
+back to the original source and fix the memory leaks by placing 
+these statements right before the return from main.
+
+   delete[] darr;
+   delete[] arr;
+
+Compile and run the program.  What happens?  Can you explain why fixing the
+memory leak might cause the result you see?

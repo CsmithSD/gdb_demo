@@ -1,0 +1,51 @@
+longRun.cpp runs a long time so as to allow gdb to attach to the running
+process.  Once attached, gdb will allow you to modify the running process:
+
+* Compile longRun.cpp with: g++ -g longRun.cpp -o longRun -std=c++11
+
+   * Run the application in the background: longRun &
+   * Note the pid (e.g. [1] 13075)
+   * Using the pid, attach to the running process with gdb: gdb longRun 13075
+   * Do a backtrace (bt) to see where the execution was interrupted
+   * You can use the frame command to move into any of the stack frames
+   * Odds are it was in nanosleep.  Use 'next' and 'step' to get into the main
+     loop:
+
+    (gdb) bt
+        #0  0x00007f2382c2ba40 in __nanosleep_nocancel () from /lib64/libc.so.6
+        #1  0x00007f2382c2baf4 in sleep () from /lib64/libc.so.6
+        #2  0x0000000000400892 in bedTimeForBonzo () at longRun.cpp:27
+        #3  0x0000000000400854 in main () at longRun.cpp:14
+        (gdb) frame 3
+        #3  0x0000000000400854 in main () at longRun.cpp:14
+        14      bedTimeForBonzo();
+        (gdb) print i
+        $1 = 99992
+        (gdb) list
+        9           int i = 100000;
+        10
+        11          do
+        12          {
+        13             showMessage(i);
+        14             bedTimeForBonzo();
+        15             i--;
+        16          } while (i);
+        17          return 0;
+        18       }
+        (gdb) next
+        Single stepping until exit from function __nanosleep_nocancel,
+        which has no line number information.
+        0x00007f2382c2b8f4 in sleep () for /lib64/libc.so.6
+        (gdb) step
+        Single stepping until exit from function sleep,
+        which has no line number information.
+        bedTimeForBonzo () at longRun.cpp:28
+        28       }
+        (gdb) next
+        main () at longRun.cpp:15
+        15       i--;
+        (gdb) set var i=99999999
+        (gdb) quit
+
+      As you detach from gdb you see the program resume but now the counter is
+    counting down from 99999999 instead of 99999.
