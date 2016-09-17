@@ -1,0 +1,6 @@
+\frametitle{Conditional Breakpoints}
+Conditional breakpoints are just like normal breakpoints except for the extra conditional:
+\begin{lstlisting}[style=BashInputStyle]
+(gdb) break fib.cpp:27 if c >= SIZE
+(gdb) break fib.cpp:27 if(c >= SIZE || c < 0)
+\end{lstlisting}

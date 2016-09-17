@@ -105,9 +105,9 @@ gdb is like the interactive shells you get when first logging into Linux.
 \item Similar to bash, python, and lisp
 \item History of commands
 \item Tab completion
-\item Execution of shell commands
+\item Execution of shell commands with the \textbf{\textcolor{blue}{shell}} command
 \end{itemize}
-If there ever is any confusion the built in help menu gives a description of what a command does and what arguments it takes.
+If there ever is any confusion, the built in help menu gives a description of what a command does and what arguments it takes.
 \end{frame}
 
 \begin{frame}[fragile]
@@ -120,7 +120,7 @@ If there are no serious problems it should execute normally.
 \begin{lstlisting}[style=BashInputStyle]
 [inferior 1 (process 1234) exited normally]
 \end{lstlisting}
-If there are is a problem it will return information regarding where it crashed, what function, and the function variables that caused the error.
+If there is a problem it will return information regarding where it crashed, what function, and the function variables that caused the error.
 \begin{lstlisting}[style=BashInputStyle]
 Program received signal SIGSEGV, Segmentation fault.
 0x0000000000400633 in main () at fib.cpp:27
@@ -129,12 +129,12 @@ Program received signal SIGSEGV, Segmentation fault.
 \end{frame}
 
 \begin{frame}{Debugging}
-The program is running successfully without any segmentation faults. However, the result isn't what is expected.
+The program is running successfully without any segmentation faults. However, the result isn't what was expected.
 \break
 \break
 Downside to using console output:
 \begin{itemize}
-\item Cout, cin, printf, and scanf are slow
+\item Input and output is slow (cout, cin, printf, and scanf)
 \item Information can scroll by too fast
 \item Memory allocation
 \item May not be thread safe
@@ -167,15 +167,19 @@ gdb will stop executing once this function is reached.
 \end{frame}
 
 \begin{frame}{Stepping Through}
-Now that the breakpoints are set we can use the \textbf{\textcolor{blue}{run}} command again to start executing the code. It will stop at these breakpoints unless an error occurs before reaching this point.
+Now that the breakpoints are set we can use the \textbf{\textcolor{blue}{run}} command again to start executing the code. It will stop at these breakpoints unless an error occurs before reaching one of these points. 
 \break
 \break
-Once the point is reached you can proceed to the next breakpoint by using the command \textbf{\textcolor{blue}{continue}}. The command run would restart the execution from the beginning.
+Once a point is reached you can proceed to the next breakpoint by using the command \textbf{\textcolor{blue}{continue}}. 
 \break
 \break
-Instead of continuing on to the next breakpoint one can go to the next line of code by using the command \textbf{\textcolor{blue}{step}}. 
+Note: run will always restart execution from the beginning of the program.
 \end{frame}
+
 \begin{frame}{Stepping Through}
+Instead of continuing on to the next breakpoint one can go to the next line of code by using the command \textbf{\textcolor{blue}{step}}. 
+\break
+\break
 Be careful with step because it will go into the sub-routine like printf or scanf. If you don't want to go into the sub-routine use the command \textbf{\textcolor{blue}{next}} and it will treat it as a instruction.
 \break
 \break
@@ -183,17 +187,35 @@ Retyping the same command over and over can get tedious so gdb allows the user t
 \end{frame}
 
 \begin{frame}{Viewing Variables}
-Breakpoints alone are not useful when variables are involved. They allow you to see if a function or if the interior of a conditional statement is being executed, however, they don't allow the user to view the value of a variable.
+Breakpoints allow you to see if a function gets called or if the interior of a conditional statement gets executed.
+\break
+\break
+What if a variable is the cause of the problem? 
+\break
+\break
+GDB will allow the user to view the values of variables and registers.
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Viewing Variables}
-If you want to see all the variables in the local function that the program has stopped executing in due to a breakpoint type the command \textbf{\textcolor{blue}{info}} followed by the scope that is to be referenced. \\
+If you want to see all the variables in the local function that the program has stopped executing in due to a breakpoint type the command \textbf{\textcolor{blue}{info}} followed by the scope that is to be referenced. 
+\break
+\break
 For example to view local variables type the following:
 \begin{lstlisting}[style=BashInputStyle]
 (gdb) info locals
 \end{lstlisting}
-To view arguments or global variables replace locals in the above command with args and variables respectfully.
+\end{frame}
+
+\begin{frame}{Viewing Variables}
+Other variables and registers can also be viewed at any time by using the command info. Some examples include:
+\begin{itemize}
+\item args - Allows viewing function arguments
+\item variables - Allows viewing of global variables
+\item registers - Prints the names of all registers excluding floating-point and vector
+\item all-registers - Prints information for all registers including floating-point and vector
+\item registers regname - Prints information for a specific register
+\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
