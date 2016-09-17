@@ -51,3 +51,18 @@
 *.mtc1
 *.out
 *.synctex.gz
+
+#Compiled executables from Make Files
+fib
+SatSource
+prime
+read_string
+seg
+main_trace 
+main_entry_exit 
+theBug 
+theOtherBug 
+main_leak 
+longRun
+
+
