@@ -236,7 +236,6 @@ Useful Commands:
 \item \textbf{\textcolor{blue}{delete}} - deletes a specific breakpoint
 \item \textbf{\textcolor{blue}{info breakpoints}} - shows information about all breakpoints
 \end{itemize}
-Another useful way to run gdb is to either use gdb --tui to bring up the source file and the interactive shell. If a gui is desired for gdb you can run ddd followed by the program executable. 
 \end{frame}
 
 
@@ -258,9 +257,21 @@ Conditional breakpoints are just like normal breakpoints except for the extra co
 (gdb) break fib.cpp:27 if(c >= SIZE || c < 0)
 \end{lstlisting}
 \end{frame}
+
+\begin{frame}{Useful Tools}
+GDB alone will not give you all the information you need. Other tools that can work well with GDB are:
+\begin{itemize}
+\item Valgrind - Tools that can automatically detect many memory management and threading bugs
+\item Electric Fence - Helps detect 2 common programming bugs: software that overruns the boundaries of a malloc() memory allocation, and software that touches a memory allocation that has been released by free()
+\item DUMA - Similar to Electric Fence
+\item Data Display Debugger (DDD) - Graphical Front-End for GDB
+\end{itemize}
+\end{frame}
+
+\begin{frame}{GNU PROJECT DEBUGGER}
+\includegraphics{src/gdb-logo.jpg}
+\end{frame}
 \end{document}
-
-
 
 
 
