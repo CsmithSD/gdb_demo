@@ -5,20 +5,20 @@
 
 using namespace std;
 
-int main(int argc, char *argv[])
+int main ( int argc, char* argv[] )
 {
-   ifstream fin;
-   linkedList* ll;
+	ifstream fin;
+	linkedList* ll;
 
-   if (!checkArgs(argc, argv))
-      return -1;
+	if ( !checkArgs ( argc, argv ) )
+		return -1;
 
-   if (!openFile(fin, argv[1]))
-      return -2;
+	if ( !openFile ( fin, argv[1] ) )
+		return -2;
 
-   ll = fillList(fin);
+	ll = fillList ( fin );
 
-   ll->printList();
+	ll->printList();
 
-   return 0;
+	return 0;
 }

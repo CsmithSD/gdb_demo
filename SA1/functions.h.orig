@@ -5,7 +5,7 @@
 
 using namespace std;
 
-bool checkArgs ( int n, char* args[] );
-bool openFile ( ifstream &fin, char* fname );
+bool checkArgs(int n, char *args[]);
+bool openFile(ifstream& fin, char *fname);
 
 #endif
