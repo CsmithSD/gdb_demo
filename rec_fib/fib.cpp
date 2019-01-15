@@ -2,7 +2,7 @@
 
 int Fibonacci ( int );
 
-main()
+int main()
 {
 	int n, i = 0, c;
 
