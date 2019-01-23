@@ -4,6 +4,7 @@ using namespace std;
 
 int main(){
     string s="010100001111";
+    cout<<"String: "<<s<<endl;
     for(int i=0; i<s.length(); i++){
         cout<<s[i]<<" :";
         if(s[i] == 0){
