@@ -24,45 +24,38 @@ using namespace std;
 
 int main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-    ll i, j, k;
-    
-    string line;
-    string hex;
-    char xType;
-    while(getline(cin, line) && cin)
-    {
-        for(i = 0; i < line.size() - 1; i++)
-        {
-            if(line[i] == '0' && (line[i + 1] == 'x' || line[i+1] == 'X'))
-            {
-                if(line[i+1] == 'x')
-                {
-                    xType = 'x';
-                }
-                else
-                {
-                    xType = 'X';
-                }
-                
-                hex = "";
-                j = i + 2;
-                while(j < line.size() && isxdigit(line[j]))
-                {
-                    hex += line[j];
-                    j++;
-                }
-                if(hex != "")
-                {
-                    cout << "0" << xType << hex << " " << stoull(hex, nullptr, 16) << "\n";
-                }
-            }
-        }
-    }
-        
-    return 0;
+	ios::sync_with_stdio ( false );
+	cin.tie ( 0 );
+	cout.tie ( 0 );
+	ll i, j, k;
+
+	string line;
+	string hex;
+	char xType;
+
+	while ( getline ( cin, line ) && cin ) {
+		for ( i = 0; i < line.size() - 1; i++ ) {
+			if ( line[i] == '0' && ( line[i + 1] == 'x' || line[i + 1] == 'X' ) ) {
+				if ( line[i + 1] == 'x' )
+					xType = 'x';
+				else
+					xType = 'X';
+
+				hex = "";
+				j = i + 2;
+
+				while ( j < line.size() && isxdigit ( line[j] ) ) {
+					hex += line[j];
+					j++;
+				}
+
+				if ( hex != "" )
+					cout << "0" << xType << hex << " " << stoull ( hex, nullptr, 16 ) << "\n";
+			}
+		}
+	}
+
+	return 0;
 }
 
 /*
