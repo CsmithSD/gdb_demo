@@ -66,6 +66,8 @@ int main()
 }
 
 /*
+This problem is simple. Just search the input for hexadecimal numbers, and print any numbers you find in both hexadecimal and decimal format.
+
 Input
 
 Input is a sequence of at most 100
