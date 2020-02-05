@@ -68,7 +68,7 @@
 \item The GNU Debugger
 \item Debugs C/C++, Go, Objective-C, and more
 \item Allows for viewing what the program is executing
-\item \href{https://www.gnu.org/software/gdb/documentation/}{www.gnu.org/softwoare/gdb/documentation}
+\item \href{https://www.gnu.org/software/gdb/documentation/}{www.gnu.org/software/gdb/documentation}
 \end{itemize}
 \end{frame}
 
@@ -190,13 +190,12 @@ Note: run will always restart execution from the beginning of the program.
 \end{frame}
 
 \begin{frame}{Stepping Through}
-Instead of continuing on to the next breakpoint one can go to the next line of code by using the command \textbf{\textcolor{blue}{step}}. 
-\break
-\break
-Be careful with step because it will go into the sub-routine like printf or scanf. If you don't want to go into the sub-routine use the command \textbf{\textcolor{blue}{next}} and it will treat it as a instruction.
-\break
-\break
-Retyping the same command over and over can get tedious so gdb allows the user to just hit enter and will execute the previously entered command.
+\begin{itemize}
+        \item \textbf{\textcolor{blue}{step}} - Goes to the next line of code and into function calls
+        \item \textbf{\textcolor{blue}{next}} - Goes to the next line of code and does not go into function calls
+        \item \textbf{\textcolor{blue}{until}} - Execute until the program reaches a source line greater than the current or a specified location
+\end{itemize}
+Retyping the same command over and over can get tedious so gdb allows the user to just hit enter and will execute the previously entered command. Can also use shortand commands like s, n, and u.
 \end{frame}
 
 \begin{frame}{Viewing Variables}
@@ -224,16 +223,16 @@ For example to view local variables type the following:
 \begin{frame}{Viewing Variables}
 Other variables and registers can also be viewed at any time by using the command info. Some examples include:
 \begin{itemize}
-\item args - Allows viewing function arguments
-\item variables - Allows viewing of global variables
-\item registers - Prints the names of all registers excluding floating-point and vector
-\item all-registers - Prints information for all registers including floating-point and vector
-\item registers regname - Prints information for a specific register
+\item \textbf{\textcolor{blue}{args}} - Allows viewing function arguments
+\item \textbf{\textcolor{blue}{variables}} - Allows viewing of global variables
+\item \textbf{\textcolor{blue}{registers}} - Prints the names of all registers excluding floating-point and vector
+\item \textbf{\textcolor{blue}{all-registers}} - Prints information for all registers including floating-point and vector
+\item \textbf{\textcolor{blue}{r regname}} - Prints information for a specific register
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
-In order to view one variable the \textbf{\textcolor{blue}{print}} command followed by a variable name will print out the value of the variable. For hex use \textbf{\textcolor{blue}{print/x}} and binary use \textbf{\textcolor{blue}{print/x}}.
+In order to view one variable the \textbf{\textcolor{blue}{print}} command followed by a variable name will print out the value of the variable. You can also specify base of the value:
 
 \begin{lstlisting}[style=BashInputStyle]
 (gdb) print my_var
@@ -251,6 +250,18 @@ How to view Memory address or information at a memory address?
 (gdb) print &array
 (gdb) print ((bigint*) 0x000d05f0).size
 \end{lstlisting} 
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Viewing Variables}
+We can also have variables display (\textbf{\textcolor{blue}{disp}}) everytime gdb pauses.
+\begin{lstlisting}[style=BashInputStyle]
+(gdb) disp N
+1: N = 0
+(gdb) n
+30            CheckPrime();
+1: N = 3
+\end{lstlisting}
 \end{frame}
 
 \begin{frame}{More Commands}
@@ -272,7 +283,7 @@ Useful Commands:
 \end{frame}
 
 \begin{frame}{Conditional Breakpoints}
-        Breakpoints are useful to figure out what the problem is or the general issue with a variable. 
+        Breakpoints are useful to figure out where the problem is and viewing variables near where it occurs. 
         \break
         \break
         We don't want to keep stepping through a function if the issue only happens towards the end of an array. 
@@ -283,7 +294,7 @@ Useful Commands:
 
 \begin{frame}[fragile]
 \frametitle{Conditional Breakpoints}
-Conditional breakpoints are just like normal breakpoints except for the extra conditional:
+Breakpoints can also have a conditional associated with them so that they only stop program flow with specific criteria:
 \begin{lstlisting}[style=BashInputStyle]
 (gdb) break fib.cpp:27 if c >= SIZE
 (gdb) break fib.cpp:27 if(c >= SIZE || c < 0)
