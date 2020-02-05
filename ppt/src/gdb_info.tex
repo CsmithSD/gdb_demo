@@ -114,11 +114,11 @@ If there ever is any confusion, the built in help menu gives a description of wh
 \frametitle{Loading an executable}
 To load an executable there are two ways. First we can add it as a command line argument to gdb:
 \begin{lstlisting}[style=BashInputStyle]
-$ gdb executable\_name
+$ gdb executable_name
 \end{lstlisting}
 If we are already running gdb we can load and unload executables at runtime:
 \begin{lstlisting}[style=BashInputStyle]
-(gdb) file executable\_name
+(gdb) file executable_name
 \end{lstlisting}
 The \textbf{\textcolor{blue}{file}} command will also unload the executable without any arguments.
 \end{frame}
@@ -209,10 +209,6 @@ What if a variable is the cause of the problem?
 GDB will allow the user to view the values of variables and registers.
 \end{frame}
 
-\begin{frame}{Viewing Variables}
-Pointers and Memory
-
-\end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Viewing Variables}
@@ -237,12 +233,24 @@ Other variables and registers can also be viewed at any time by using the comman
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Viewing Variables}
-In order to view one variable the \textbf{\textcolor{blue}{print}} command followed by a variable name will print out the value of the variable. If hex output is desired use \textbf{\textcolor{blue}{print/x}}
+In order to view one variable the \textbf{\textcolor{blue}{print}} command followed by a variable name will print out the value of the variable. For hex use \textbf{\textcolor{blue}{print/x}} and binary use \textbf{\textcolor{blue}{print/x}}.
+
 \begin{lstlisting}[style=BashInputStyle]
 (gdb) print my_var
 (gdb) print/x my_var
+(gdb) print/t my_var
 \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Viewing Variables}
+
+How to view Memory address or information at a memory address?
+\begin{lstlisting}[style=BashInputStyle]
+(gdb) print array
+(gdb) print &array
+(gdb) print ((bigint*) 0x000d05f0).size
+\end{lstlisting} 
 \end{frame}
 
 \begin{frame}{More Commands}
