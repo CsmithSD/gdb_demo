@@ -1,0 +1,14 @@
+Problem Statement:
+    You're given n, m, and q.
+    You're given n people, and m pairs of people who are friends, and q queries.
+    Each of the m pairs has two indexes, 1 <= i,j <= n, the people who are friends
+    If person A is friends with person B, and B is friends with C, A and C are friends, too.
+    For each of the two queries, you're given two people, 1 <= i,j <= n, and you have to print 'yes'
+    if they are friends, 'no' otherwise
+
+The problem in the code is that you're missing a line,
+if(a == b) continue;
+This prevents you from joining two groups that are already joined together.
+
+The problem mainifests itself much later, making debugging using prints very difficult
+to do.
