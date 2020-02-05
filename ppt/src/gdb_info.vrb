@@ -3,9 +3,6 @@ Conditional breakpoints are just like normal breakpoints except for the extra co
 \begin{lstlisting}[style=BashInputStyle]
 (gdb) break fib.cpp:27 if c >= SIZE
 (gdb) break fib.cpp:27 if(c >= SIZE || c < 0)
-\end{lstlisting}
-We can also create a variable if we want to break when a function is called a specific amount of times.
-\begin{lstlisting}[style=BashInputStyle]
 (gdb) set $count = 0
 (gdb) break funMethod: if ++$count == 1000
 \end{lstlisting}

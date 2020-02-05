@@ -7,7 +7,7 @@
 \usepackage{tikz}
 \usepackage{xcolor}
 \usepackage{listings}
-\usepackage{caption}
+
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
@@ -29,8 +29,6 @@
   xleftmargin=0.1\linewidth
 }
 
-
- 
 \urlstyle{same}
 \usetikzlibrary{arrows,automata}
 %\usepackage[latin1]{inputenc}
@@ -41,8 +39,8 @@
 %\setbeamertemplate{navigation symbols}{} 
 %\logo{} 
 \institute{SDSMT ACM/LUG} 
-%\date{} 
-%\subject{} 
+
+
 \begin{document}
 
 \begin{frame}
@@ -92,22 +90,37 @@ To start gdb run the following:
 \begin{lstlisting}[style=BashInputStyle]
  $ gdb
 \end{lstlisting}
- To load a file on start up just add the file name as a commandline argument. \\
- After the above command the following prompt should be shown:
+ To load a file on start up just add the file name as a commandline argument. 
+ \break
+ \break
+ The following prompt should be shown:
 \begin{lstlisting}[style=BashInputStyle]
  (gdb)
 \end{lstlisting}
 \end{frame}
 
 \begin{frame}{Interactive Shell}
-gdb is like the interactive shells you get when first logging into Linux.
+        GDB is like the interactive shells you get on the command line:
 \begin{itemize}
-\item Similar to bash, python, and lisp
+\item Similar to bash, ksh, python, and lisp
 \item History of commands
 \item Tab completion
 \item Execution of shell commands with the \textbf{\textcolor{blue}{shell}} command
 \end{itemize}
 If there ever is any confusion, the built in help menu gives a description of what a command does and what arguments it takes.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Loading an executable}
+To load an executable there are two ways. First we can add it as a command line argument to gdb:
+\begin{lstlisting}[style=BashInputStyle]
+$ gdb executable\_name
+\end{lstlisting}
+If we are already running gdb we can load and unload executables at runtime:
+\begin{lstlisting}[style=BashInputStyle]
+(gdb) file executable\_name
+\end{lstlisting}
+The \textbf{\textcolor{blue}{file}} command will also unload the executable without any arguments.
 \end{frame}
 
 \begin{frame}[fragile]
@@ -196,6 +209,11 @@ What if a variable is the cause of the problem?
 GDB will allow the user to view the values of variables and registers.
 \end{frame}
 
+\begin{frame}{Viewing Variables}
+Pointers and Memory
+
+\end{frame}
+
 \begin{frame}[fragile]
 \frametitle{Viewing Variables}
 If you want to see all the variables in the local function that the program has stopped executing in due to a breakpoint type the command \textbf{\textcolor{blue}{info}} followed by the scope that is to be referenced. 
@@ -238,15 +256,21 @@ Useful Commands:
 \end{itemize}
 \end{frame}
 
+\begin{frame}{More on Breakpoints}
+        To create temporary breakpoints use the \textbf{\textcolor{blue}{tbreak}} command. A temporary breakpoint only stops the program once, and is then removed.
+        \break
+        \break
+        Use the \textbf{\textcolor{blue}{disable}}/\textbf{\textcolor{blue}{enable}} command followed by the breakpoint number to turn it off/on.
+\end{frame}
 
 \begin{frame}{Conditional Breakpoints}
-Breakpoints are useful to figure out what the problem is or the general issue with a variable. 
-\break
-\break
-We don't want to keep stepping through a function if the issue only happens towards the end of an array. 
-\break
-\break
-So for this reason we would like to stop executing based on a conditional requirement.
+        Breakpoints are useful to figure out what the problem is or the general issue with a variable. 
+        \break
+        \break
+        We don't want to keep stepping through a function if the issue only happens towards the end of an array. 
+        \break
+        \break
+        So for this reason we would like to stop executing based on a conditional requirement.
 \end{frame}
 
 \begin{frame}[fragile]
@@ -256,6 +280,24 @@ Conditional breakpoints are just like normal breakpoints except for the extra co
 (gdb) break fib.cpp:27 if c >= SIZE
 (gdb) break fib.cpp:27 if(c >= SIZE || c < 0)
 \end{lstlisting}
+We can also create a variable if we want to break when a function is called a specific amount of times.
+\begin{lstlisting}[style=BashInputStyle]
+(gdb) set $count = 0
+(gdb) break funMethod: if ++$count == 1000
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}{Debugging}
+GDB also has a dotfile for keeping settings between runs. .gdbinit
+\begin{itemize}
+\item https://github.com/cyrus-and/gdb-dashboard
+\end{itemize}
+When Working on a desktop you may not want to use the command line.
+\begin{itemize}
+\item Data Display Debugger (DDD) - Graphical Front-End for GDB
+\item VS Code
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Useful Tools}
@@ -264,12 +306,11 @@ GDB alone will not give you all the information you need. Other tools that can w
 \item Valgrind - Tools that can automatically detect many memory management and threading bugs
 \item Electric Fence - Helps detect 2 common programming bugs: software that overruns the boundaries of a malloc() memory allocation, and software that touches a memory allocation that has been released by free()
 \item DUMA - Similar to Electric Fence
-\item Data Display Debugger (DDD) - Graphical Front-End for GDB
 \end{itemize}
 \end{frame}
 
 \begin{frame}{GNU PROJECT DEBUGGER}
-\includegraphics{src/gdb-logo.jpg}
+\includegraphics{src/gdb_logo.png}
 \end{frame}
 \end{document}
 
